@@ -8,7 +8,7 @@ const CocktailList = () => {
 
   if (isLoading) return <Loading />;
 
-  if (cooktails.length < 1)
+  if (!cooktails)
     return (
       <h2 className="section-title">
         Couldn't found any results for this search term.
@@ -16,9 +16,13 @@ const CocktailList = () => {
     );
 
   return (
-    <div>
-      <h2>cocktail list component</h2>
-    </div>
+    <section className="section">
+      <div className="cocktails-center">
+        {cooktails?.map((coocktail) => (
+          <Cocktail key={coocktail.id} {...coocktail} />
+        ))}
+      </div>
+    </section>
   );
 };
 

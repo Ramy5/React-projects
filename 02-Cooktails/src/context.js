@@ -7,15 +7,15 @@ const url = "https://www.thecocktaildb.com/api/json/v1/1/search.php?s=";
 const AppContext = React.createContext();
 
 const AppProvider = ({ children }) => {
-  const [searchTerm, setSearchTerm] = useState("afdfdsf");
+  const [searchTerm, setSearchTerm] = useState("a");
   const [isLoading, setIsLoading] = useState(true);
   const [cooktails, setCooktails] = useState([]);
 
-  const getCooktails = async () => {
+  const getCooktails = useCallback(async () => {
     setIsLoading(true);
     try {
       const { data } = await axios.get(`${url}${searchTerm}`);
-      const newData = data.drinks.map((item) => {
+      const newData = data?.drinks?.map((item) => {
         return {
           id: item?.idDrink,
           alcoholic: item?.strAlcoholic,
@@ -30,11 +30,11 @@ const AppProvider = ({ children }) => {
       console.error(error);
     }
     setIsLoading(false);
-  };
+  }, [searchTerm]);
 
   useEffect(() => {
     getCooktails();
-  }, [searchTerm]);
+  }, [searchTerm, getCooktails]);
 
   const values = { setSearchTerm, cooktails, isLoading };
 
